@@ -7,6 +7,6 @@ class AddNorm(nn.Module):
         self.norm = nn.LayerNorm(size)
         
     
-    def forward(self, x):
-        return x + self.norm(x)
+    def forward(self, x, sublayer):
+        return x + self.norm(x + sublayer)
     
