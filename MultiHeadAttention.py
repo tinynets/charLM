@@ -9,7 +9,8 @@ def scaled_dot_product_attention(q, k, v, mask=None):
     depth = k.size(-1)
     logits = matmul_qk / math.sqrt(depth)
 
-    # if masking it would be done here, not doing this now
+    if mask is not None:
+        logits += (mask * -1e9)
 
     attention_weights = torch.nn.functional.softmax(logits, dim=-1)
     output = torch.matmul(attention_weights, v)
@@ -35,14 +36,14 @@ class MHA(nn.Module):
         x = x.view(batch_size, -1, self.n_heads, self.d_model // self.n_heads)
         return x.permute(0, 2, 1, 3)
 
-    def forward(self, x):
+    def forward(self, x, mask=None):
         batch_size = x.size(0)
 
         q = self.split_heads(self.wq(x), batch_size)
         k = self.split_heads(self.wk(x), batch_size)
         v = self.split_heads(self.wv(x), batch_size)
 
-        scaled_attention, attention_weights = scaled_dot_product_attention(q, k, v)
+        scaled_attention, attention_weights = scaled_dot_product_attention(q, k, v, mask)
         scaled_attention = scaled_attention.permute(0, 2, 1, 3).contiguous()
 
         concat_attention = scaled_attention.view(batch_size, -1, self.d_model)
