@@ -20,5 +20,10 @@ class PositionalEncoding(nn.Module):
 
     def forward(self, x):
         seq_len = x.size(1)
-        return self.pos_encoding[:seq_len, :].unsqueeze(0)
+        pos_enc = self.pos_encoding[:seq_len, :].unsqueeze(0)
+        pos_enc = self.penc[:seq_len, :].unsqueeze(0)
+        return x + pos_enc
+
+    
+
 
