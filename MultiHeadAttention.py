@@ -36,12 +36,12 @@ class MHA(nn.Module):
         x = x.view(batch_size, -1, self.n_heads, self.d_model // self.n_heads)
         return x.permute(0, 2, 1, 3)
 
-    def forward(self, x, mask=None):
-        batch_size = x.size(0)
+    def forward(self, query, key, value, mask=None):
+        batch_size = query.size(0)
 
-        q = self.split_heads(self.wq(x), batch_size)
-        k = self.split_heads(self.wk(x), batch_size)
-        v = self.split_heads(self.wv(x), batch_size)
+        q = self.split_heads(self.wq(query), batch_size)
+        k = self.split_heads(self.wk(key), batch_size)
+        v = self.split_heads(self.wv(value), batch_size)
 
         scaled_attention, attention_weights = scaled_dot_product_attention(q, k, v, mask)
         scaled_attention = scaled_attention.permute(0, 2, 1, 3).contiguous()
