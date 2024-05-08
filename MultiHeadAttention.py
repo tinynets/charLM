@@ -19,7 +19,7 @@ def scaled_dot_product_attention(q, k, v, mask=None):
 
 
 class MHA(nn.Module):
-    def __init__(self, d_model, n_heads):
+    def __init__(self, d_model, n_heads=32):
         super(MHA, self).__init__()
         self.n_heads = n_heads
         self.d_model = d_model
