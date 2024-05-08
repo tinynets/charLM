@@ -16,8 +16,6 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         
-        
-        x = self.pos_enc(x)
         mha_output, attn_weights = self.mha(x, x, x)
         x = self.addnorm(x, mha_output)
         x = self.ffn(x)
