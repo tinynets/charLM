@@ -1,2 +1,1 @@
-The purpose of this repo is to test out ideas and udnerstand the APIs of various deep learning libraries.
-
+Building a character level language model just to see how it works
