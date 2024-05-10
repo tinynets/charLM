@@ -19,14 +19,12 @@ def scaled_dot_product_attention(q, k, v, mask=None):
 
 
 class MHA(nn.Module):
-    def __init__(self, d_model, n_heads=32):
+    def __init__(self, d_model, num_heads=32):
         super(MHA, self).__init__()
-        self.n_heads = n_heads
+        self.num_heads = num_heads
         self.d_model = d_model
 
-        print(f'[MHA] d_model: {self.d_model}')
-
-        assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
+        assert d_model % num_heads == 0, "d_model must be divisible by num_heads"
 
         self.wq = nn.Linear(d_model, d_model)
         self.wk = nn.Linear(d_model, d_model)
@@ -35,7 +33,7 @@ class MHA(nn.Module):
         self.final_linear = nn.Linear(d_model, d_model)
 
     def split_heads(self, x, batch_size):
-        x = x.view(batch_size, -1, self.n_heads, self.d_model // self.n_heads)
+        x = x.view(batch_size, -1, self.num_heads, self.d_model // self.num_heads)
         return x.permute(0, 2, 1, 3)
 
     def forward(self, query, key, value, mask=None):
@@ -45,11 +43,7 @@ class MHA(nn.Module):
         key = key.float()
         value = value.float()
 
-        print(self.d_model)
-        print(query.shape)
-
-        print(self.wq.weight.shape, query.shape)
-
+        # print(self.wq.weight.shape, query.shape)
 
         q = self.split_heads(self.wq(query), batch_size)
         k = self.split_heads(self.wk(key), batch_size)

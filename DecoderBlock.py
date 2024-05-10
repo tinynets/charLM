@@ -5,15 +5,15 @@ from AddNorm import AddNorm
 from PositionwiseFeedForward import PositionwiseFeedForward
 
 class Decoder(nn.Module):
-    def __init__(self, vocab_size, embedding_dim):
+    def __init__(self, d_model, num_heads):
         super(Decoder, self).__init__()
-        self.attention = MHA(d_model=embedding_dim, n_heads=32)
-        self.addnorm1 = AddNorm(size=embedding_dim)
-        self.masked_attention = MHA(d_model=embedding_dim, n_heads=32)
-        self.mha = MHA(d_model=embedding_dim, n_heads=32)
-        self.addnorm2 = AddNorm(size=embedding_dim)
-        self.ffn = PositionwiseFeedForward(d_model=embedding_dim, d_ff=embedding_dim*6)
-        self.addnorm3 = AddNorm(size=embedding_dim)
+        self.attention = MHA(d_model=d_model, num_heads=num_heads)
+        self.addnorm1 = AddNorm(size=d_model)
+        self.masked_attention = MHA(d_model=d_model, num_heads=num_heads)
+        self.mha = MHA(d_model=d_model, num_heads=num_heads)
+        self.addnorm2 = AddNorm(size=d_model)
+        self.ffn = PositionwiseFeedForward(d_model=d_model, d_ff=d_model*6)
+        self.addnorm3 = AddNorm(size=d_model)
         pass
 
     def create_mask(self, size):
@@ -24,7 +24,6 @@ class Decoder(nn.Module):
         mask = self.create_mask(x.size(1))
         output, _ = self.masked_attention(x, x, x, mask=mask)
         x = self.addnorm1(x, output)
-        print(encoder_output.dtype)
         cross_attention_output, _ = self.mha(x, encoder_output, encoder_output)
         x = self.addnorm2(x, cross_attention_output)
         ffn_output = self.ffn(x)

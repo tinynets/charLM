@@ -5,14 +5,14 @@ from AddNorm import AddNorm
 from PositionwiseFeedForward import PositionwiseFeedForward
 
 class Encoder(nn.Module):
-    def __init__(self, vocab_size, embedding_dim):
+    def __init__(self, d_model, num_heads):
         super(Encoder, self).__init__()
        
-        self.pos_enc = PositionalEncoding(d_model=embedding_dim, max_len=50)
-        self.mha = MHA(d_model=embedding_dim, n_heads=32)
-        self.addnorm = AddNorm(size=embedding_dim)
-        self.ffn = PositionwiseFeedForward(d_model=embedding_dim, d_ff=embedding_dim*6)
-        self.addnorm2 = AddNorm(size=embedding_dim)
+        self.pos_enc = PositionalEncoding(d_model=d_model, max_len=50)
+        self.mha = MHA(d_model=d_model, num_heads=num_heads)
+        self.addnorm = AddNorm(size=d_model)
+        self.ffn = PositionwiseFeedForward(d_model=d_model, d_ff=d_model*6)
+        self.addnorm2 = AddNorm(size=d_model)
 
     def forward(self, x):
         
@@ -21,5 +21,6 @@ class Encoder(nn.Module):
         x = self.ffn(x)
         x = self.addnorm2(x, x)
         return x
+    
         
         

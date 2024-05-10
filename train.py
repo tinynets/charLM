@@ -7,8 +7,9 @@ from Transformer import Transformer
 from dataset_utils import CharDataset
 
 batch_size = 64
-d_model = 512
+d_model = 64
 seq_len = 10
+num_heads = 8
 
 data, vocab, vocab_size = load_and_preprocess_data()
 
@@ -26,13 +27,9 @@ dataset = CharDataset(data, tokenizer, seq_len)
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
-model = Transformer(vocab_size=vocab_size, d_model=d_model, n_decoder_layers=6, n_encoder_layers=6)
+model = Transformer(vocab_size=vocab_size, d_model=d_model, n_decoder_layers=6, n_encoder_layers=6, num_heads=num_heads)
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-
-
-for batch_idx, (src, tgt) in enumerate(dataloader):
-    print(src.shape, tgt.shape)
     
 
 for epoch in range(2):
@@ -40,13 +37,9 @@ for epoch in range(2):
     model.train()
     total_loss = 0 
     for batch, (src, tgt) in enumerate(dataloader):
-        # print('checking shapes')
-        # print(src.shape, tgt.shape)
-        
         optimizer.zero_grad()
-
-
         logits = model(src, tgt)
+        print(f'logits shape: {logits.shape}')
         # loss = criterion(logits.transpose(1, 2), Y_batch[:, 1:])
 
         # loss.backward()
