@@ -24,9 +24,9 @@ class MHA(nn.Module):
         self.n_heads = n_heads
         self.d_model = d_model
 
-        assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
+        print(f'[MHA] d_model: {self.d_model}')
 
-        print(f'[MHA] d_model: {d_model}' )
+        assert d_model % n_heads == 0, "d_model must be divisible by n_heads"
 
         self.wq = nn.Linear(d_model, d_model)
         self.wk = nn.Linear(d_model, d_model)
@@ -47,6 +47,9 @@ class MHA(nn.Module):
 
         print(self.d_model)
         print(query.shape)
+
+        print(self.wq.weight.shape, query.shape)
+
 
         q = self.split_heads(self.wq(query), batch_size)
         k = self.split_heads(self.wk(key), batch_size)

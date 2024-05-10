@@ -13,21 +13,24 @@ class Transformer(nn.Module):
         self.decoders = nn.ModuleList([Decoder(vocab_size, d_model) for _ in range(n_decoder_layers)])
         self.final_layer = nn.Linear(d_model, vocab_size)
 
-    def forward(self, src, trg):
+    def forward(self, source, target):
 
-        src = self.embedding(src)
-        src = self.pos_enc(src)
+        source = self.embedding(source)
+        source = self.pos_enc(source)
 
-        enc_output = src
+        enc_output = source
         for encoder in self.encoders:
             enc_output = encoder(enc_output)
 
-        print(f'encoder part done, enc_output shape: {enc_output.shape}')
-        print(trg.shape)
+        # we are done with the encoder part, on to decoder
 
-        dec_output = trg
+        print(f'encoder part done, enc_output shape: {enc_output.shape}')
+        print(target.shape)
+
+        dec_output = target
         for decoder in self.decoders:
             dec_output = decoder(dec_output, enc_output)
+
         print('final dec_output')
         print(dec_output.shape)
         logits = self.final_layer(dec_output)

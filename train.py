@@ -22,7 +22,7 @@ X = []
 Y = []
 
 tokenized_data = tokenizer.encode(data)
-dataset = CharDataset(tokenized_data, seq_len)
+dataset = CharDataset(data, tokenizer, seq_len)
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
@@ -30,22 +30,27 @@ model = Transformer(vocab_size=vocab_size, d_model=d_model, n_decoder_layers=6, 
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+
+for batch_idx, (src, tgt) in enumerate(dataloader):
+    print(src.shape, tgt.shape)
+    
+
 for epoch in range(2):
     print('epoch:', epoch)
     model.train()
     total_loss = 0 
-    for batch, (X_batch, Y_batch) in enumerate(dataloader):
-
-        print(X_batch.shape, X_batch[:, :-1].shape)
+    for batch, (src, tgt) in enumerate(dataloader):
+        # print('checking shapes')
+        # print(src.shape, tgt.shape)
         
         optimizer.zero_grad()
-        Y_batch = Y_batch.long()
 
-        logits = model(X_batch, X_batch[:, :-1])
-        loss = criterion(logits.transpose(1, 2), Y_batch[:, 1:])
 
-        loss.backward()
-        optimizer.step()
-        total_loss += loss.item()
+        logits = model(src, tgt)
+        # loss = criterion(logits.transpose(1, 2), Y_batch[:, 1:])
 
-    print('epoch:', epoch, 'loss:', total_loss)
+        # loss.backward()
+        # optimizer.step()
+        # total_loss += loss.item()
+
+    # print('epoch:', epoch, 'loss:', total_loss)
