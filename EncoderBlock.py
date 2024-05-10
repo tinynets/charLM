@@ -20,7 +20,6 @@ class Encoder(nn.Module):
         x = self.addnorm(x, mha_output)
         x = self.ffn(x)
         x = self.addnorm2(x, x)
-        print('ENCODER_BLOCK_OUTPUT', x.shape, x.dtype)
         return x
         
         

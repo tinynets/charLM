@@ -12,9 +12,27 @@ def load_and_preprocess_data():
 
     data = " ".join(lines)
     vocab = sorted(set(data))
+    vocab_size = len(vocab)
 
-    return data, vocab 
+    return data, vocab, vocab_size 
 
-# class Tokenizer:
+def tokenize(vocab):
+    chars_to_idx = {ch: i for i, ch in enumerate(vocab)}
+    return chars_to_idx
 
-    # build this out later
+def detokenize(vocab):
+    idx_to_chars = {i: ch for i, ch in enumerate(vocab)}
+    return idx_to_chars
+
+
+class Tokenizer:
+    def __init__(self, vocab):
+        self.vocab = vocab
+        self.chars_to_idx = tokenize(vocab)
+        self.idx_to_chars = detokenize(vocab)
+
+    def encode(self, text):
+        return [self.chars_to_idx[ch] for ch in text]
+
+    def decode(self, indices):
+        return "".join([self.idx_to_chars[i] for i in indices])

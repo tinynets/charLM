@@ -20,14 +20,16 @@ class Transformer(nn.Module):
 
         enc_output = src
         for encoder in self.encoders:
-            print('TRANSFORMER_BLOCK_ENC', enc_output.shape, enc_output.dtype)
             enc_output = encoder(enc_output)
+
+        print(f'encoder part done, enc_output shape: {enc_output.shape}')
+        print(trg.shape)
 
         dec_output = trg
         for decoder in self.decoders:
-            dec_output = decoder(dec_output.long(), enc_output)
-            print(dec_output.size(), 'decoder output size')
-
+            dec_output = decoder(dec_output, enc_output)
+        print('final dec_output')
+        print(dec_output.shape)
         logits = self.final_layer(dec_output)
         output = nn.functional.log_softmax(logits, dim=-1)
 

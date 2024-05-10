@@ -24,6 +24,7 @@ class Decoder(nn.Module):
         mask = self.create_mask(x.size(1))
         output, _ = self.masked_attention(x, x, x, mask=mask)
         x = self.addnorm1(x, output)
+        print(encoder_output.dtype)
         cross_attention_output, _ = self.mha(x, encoder_output, encoder_output)
         x = self.addnorm2(x, cross_attention_output)
         ffn_output = self.ffn(x)
