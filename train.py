@@ -18,7 +18,6 @@ data = data[:batch_size * 2]
 
 tokenizer = Tokenizer(vocab)
 
-
 X = []
 Y = []
 
@@ -33,17 +32,20 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
     
 
 for epoch in range(2):
-    print('epoch:', epoch)
+    # print('epoch:', epoch)
     model.train()
     total_loss = 0 
     for batch, (src, tgt) in enumerate(dataloader):
         optimizer.zero_grad()
         logits = model(src, tgt)
         print(f'logits shape: {logits.shape}')
-        # loss = criterion(logits.transpose(1, 2), Y_batch[:, 1:])
+        print(f'target shape: {tgt.shape}')
 
-        # loss.backward()
-        # optimizer.step()
-        # total_loss += loss.item()
+        # TODO: Understand a bit better the shapes and loss calcs
+        loss = criterion(logits.view(-1, logits.size(-1)), tgt.view(-1))
 
-    # print('epoch:', epoch, 'loss:', total_loss)
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item()
+
+    print('epoch:', epoch, 'loss:', total_loss)
