@@ -4,3 +4,4 @@ scratch.py
 preprocessed_data
 todo.md
 models/*
+**/__pycache__/
