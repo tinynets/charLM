@@ -1,7 +1,8 @@
 import torch
 from torch.utils.data import DataLoader
 from torch import optim
-from utils import load_and_preprocess_data, Tokenizer
+from utils import load_and_preprocess_data
+from tokenizer import Tokenizer
 from Transformer import Transformer
 
 from dataset_utils import CharDataset
@@ -31,15 +32,14 @@ criterion = torch.nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
     
 
-for epoch in range(2):
+for epoch in range(20):
     # print('epoch:', epoch)
     model.train()
     total_loss = 0 
     for batch, (src, tgt) in enumerate(dataloader):
         optimizer.zero_grad()
         logits = model(src, tgt)
-        print(f'logits shape: {logits.shape}')
-        print(f'target shape: {tgt.shape}')
+
 
         # TODO: Understand a bit better the shapes and loss calcs
         loss = criterion(logits.view(-1, logits.size(-1)), tgt.view(-1))
@@ -49,3 +49,5 @@ for epoch in range(2):
         total_loss += loss.item()
 
     print('epoch:', epoch, 'loss:', total_loss)
+
+torch.save(model.state_dict(), 'model.pth')
