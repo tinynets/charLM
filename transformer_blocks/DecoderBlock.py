@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from MultiHeadAttention import MHA
-from AddNorm import AddNorm
-from PositionwiseFeedForward import PositionwiseFeedForward
+from .MultiHeadAttention import MHA
+from .AddNorm import AddNorm
+from .PositionwiseFeedForward import PositionwiseFeedForward
 
 class Decoder(nn.Module):
     def __init__(self, d_model, num_heads):

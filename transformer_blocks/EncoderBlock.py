@@ -1,8 +1,8 @@
 import torch.nn as nn
-from PositionalEncoding import PositionalEncoding
-from MultiHeadAttention import MHA
-from AddNorm import AddNorm
-from PositionwiseFeedForward import PositionwiseFeedForward
+from .PositionalEncoding import PositionalEncoding
+from .MultiHeadAttention import MHA
+from .AddNorm import AddNorm
+from .PositionwiseFeedForward import PositionwiseFeedForward
 
 class Encoder(nn.Module):
     def __init__(self, d_model, num_heads):

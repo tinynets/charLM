@@ -1,11 +1,17 @@
 import torch
+import os
 from torch.utils.data import DataLoader
 from torch import optim
-from utils import load_data, create_vocab, preprocess
+from utils.utils import load_data, create_vocab, preprocess
 from tokenizer import Tokenizer
-from Transformer import Transformer
+from transformer_blocks import Transformer
+from utils.dataset_utils import CharDataset
+import datetime
 
-from dataset_utils import CharDataset
+
+timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+model_output_path = f'models/model_{timestamp}.pth'
+
 
 batch_size = 64
 d_model = 64
@@ -56,4 +62,4 @@ for epoch in range(20):
 
     print('epoch:', epoch, 'loss:', total_loss)
 
-torch.save(model.state_dict(), 'model.pth')
+torch.save(model.state_dict(), model_output_path)

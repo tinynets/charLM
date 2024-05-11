@@ -1,7 +1,7 @@
 import torch.nn as nn
-from EncoderBlock import Encoder
-from DecoderBlock import Decoder
-from PositionalEncoding import PositionalEncoding
+from .EncoderBlock import Encoder
+from .DecoderBlock import Decoder
+from .PositionalEncoding import PositionalEncoding
 
 class Transformer(nn.Module):
     def __init__(self, vocab_size, d_model, n_encoder_layers, n_decoder_layers, num_heads):
