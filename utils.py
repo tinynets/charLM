@@ -1,38 +1,29 @@
-def load_and_preprocess_data():
+def load_data(file_name):
     """
-        Returns the data and the vocab (set of unique tokens)
+        Returns the contents of a text file as a list, of strings, one for each line.
     """
-
-    with open('input.txt', 'r') as file:
+    with open(file_name, 'r') as file:
         lines = file.readlines()
 
-    lines = [line.strip() for line in lines] # remove new line char
-    lines = [line for line in lines if line != ""] # remove empties
-    lines = list(map(str.lower, lines)) # make everything lower to reduce vocab
+    return lines 
 
-    data = " ".join(lines)
+def preprocess(data):
+
+    data = [line.strip() for line in data] # remove new line char
+    data = [line for line in data if line != ""] # remove empties
+    data = list(map(str.lower, data)) # make everything lower to reduce vocab
+    preprocessed_data = " ".join(data)
+
+    return preprocessed_data
+
+# vocab is needed by itself during inference with additional logic so moving it out of the load_and_preprocess_data function
+def create_vocab(data):
+    """
+        Pass in text, returns a sorted list of unique characters in the text.
+        Also returns the size of the vocab.
+    """
+    
+    
     vocab = sorted(set(data))
-    vocab_size = len(vocab)
 
-    return data, vocab, vocab_size 
-
-def tokenize(vocab):
-    chars_to_idx = {ch: i for i, ch in enumerate(vocab)}
-    return chars_to_idx
-
-def detokenize(vocab):
-    idx_to_chars = {i: ch for i, ch in enumerate(vocab)}
-    return idx_to_chars
-
-
-class Tokenizer:
-    def __init__(self, vocab):
-        self.vocab = vocab
-        self.chars_to_idx = tokenize(vocab)
-        self.idx_to_chars = detokenize(vocab)
-
-    def encode(self, text):
-        return [self.chars_to_idx[ch] for ch in text]
-
-    def decode(self, indices):
-        return "".join([self.idx_to_chars[i] for i in indices])
+    return vocab , len(vocab)

@@ -21,8 +21,8 @@ class Decoder(nn.Module):
         return mask[None, None, :, :]
 
     def forward(self, x, encoder_output):
-        mask = self.create_mask(x.size(1))
-        output, _ = self.masked_attention(x, x, x, mask=mask)
+        target_mask = self.create_mask(x.size(1))
+        output, _ = self.masked_attention(x, x, x, mask=target_mask)
         x = self.addnorm1(x, output)
         cross_attention_output, _ = self.mha(x, encoder_output, encoder_output)
         x = self.addnorm2(x, cross_attention_output)
