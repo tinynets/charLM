@@ -1,5 +1,6 @@
 .ipynb_checkpoints/
 scratch.ipynb
 scratch.py
-__pycache__/
+preprocessed_data
 todo.md
+models/*
