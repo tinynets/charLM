@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import DataLoader
 from torch import optim
-from utils import load_and_preprocess_data
+from utils import load_data, create_vocab, preprocess
 from tokenizer import Tokenizer
 from Transformer import Transformer
 
@@ -12,18 +12,24 @@ d_model = 64
 seq_len = 10
 num_heads = 8
 
-data, vocab, vocab_size = load_and_preprocess_data()
+
+data = load_data("input.txt")
+preprocessed_data = preprocess(data)
+vocab, vocab_size = create_vocab(preprocessed_data)
 
 # just using 2 batches for now to make sure it goes through the entire network
-data = data[:batch_size * 2]
+preprocessed_data = preprocessed_data[:batch_size * 2]
+
+
 
 tokenizer = Tokenizer(vocab)
 
 X = []
 Y = []
 
-tokenized_data = tokenizer.encode(data)
-dataset = CharDataset(data, tokenizer, seq_len)
+dataset = CharDataset(preprocessed_data, tokenizer, seq_len)
+
+tokenized_data = tokenizer.encode(preprocessed_data)
 
 dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=True)
 
