@@ -1,3 +1,5 @@
+import pickle
+
 def load_data(file_name):
     """
         Returns the contents of a text file as a list, of strings, one for each line.
@@ -22,8 +24,17 @@ def create_vocab(data):
         Pass in text, returns a sorted list of unique characters in the text.
         Also returns the size of the vocab.
     """
-    
+    padding_token = '~'
     
     vocab = sorted(set(data))
+    vocab.append(padding_token)
+
+    with open('vocab.pkl', 'wb') as f:
+        pickle.dump(vocab, f)
 
     return vocab , len(vocab)
+
+def load_vocab():
+    with open('vocab.pkl', 'rb') as f:
+        vocab = pickle.load(f)
+    return vocab
