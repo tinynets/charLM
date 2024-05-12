@@ -3,7 +3,7 @@ import os
 from torch.utils.data import DataLoader
 from torch import optim
 from utils.utils import load_data, create_vocab, preprocess
-from tokenizer import Tokenizer
+from utils.tokenizer import Tokenizer
 from transformer_blocks import Transformer
 from utils.dataset_utils import CharDataset
 import datetime
@@ -19,7 +19,7 @@ seq_len = 10
 num_heads = 8
 
 
-data = load_data("input.txt")
+data = load_data("data/input.txt")
 preprocessed_data = preprocess(data)
 vocab, vocab_size = create_vocab(preprocessed_data)
 
@@ -42,7 +42,6 @@ dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True, drop_last=
 model = Transformer(vocab_size=vocab_size, d_model=d_model, n_decoder_layers=6, n_encoder_layers=6, num_heads=num_heads)
 criterion = torch.nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-    
 
 for epoch in range(20):
     # print('epoch:', epoch)
