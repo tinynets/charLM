@@ -13,7 +13,13 @@ class Transformer(nn.Module):
         self.final_layer = nn.Linear(d_model, vocab_size)
         self.num_heads = num_heads
 
+    def create_padding_mask(self, x):
+        mask = (x == 0)
+        return mask
+
     def forward(self, source, target):
+
+        # print(F'TRANSFORMER_BLOCK: source: {source.shape}, target: {target.shape}')
 
         source = self.embedding(source)
         source = self.pos_enc(source)

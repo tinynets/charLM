@@ -19,8 +19,10 @@ class PositionalEncoding(nn.Module):
         self.register_buffer('penc', self.pos_encoding)       
 
     def forward(self, x):
+        
         seq_len = x.size(1)
-        pos_enc = self.pos_encoding[:seq_len, :].unsqueeze(0)
+        pos_enc = self.pos_encoding[:seq_len, :].unsqueeze(0).to(x.device)
+        # pos_enc = self.pos_encoding[:seq_len, :].unsqueeze(0)
         return x + pos_enc
 
     
