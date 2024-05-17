@@ -9,7 +9,10 @@ def scaled_dot_product_attention(q, k, v, mask=None):
     depth = k.size(-1)
     logits = matmul_qk / math.sqrt(depth)
 
+    
+
     if mask is not None:
+        mask = mask.to(logits.device)
         logits += (mask * -1e9)
 
     attention_weights = torch.nn.functional.softmax(logits, dim=-1)

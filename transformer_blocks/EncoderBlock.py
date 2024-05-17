@@ -8,7 +8,6 @@ class Encoder(nn.Module):
     def __init__(self, d_model, num_heads):
         super(Encoder, self).__init__()
        
-        self.pos_enc = PositionalEncoding(d_model=d_model, max_len=50)
         self.mha = MHA(d_model=d_model, num_heads=num_heads)
         self.addnorm = AddNorm(size=d_model)
         self.ffn = PositionwiseFeedForward(d_model=d_model, d_ff=d_model*6)
