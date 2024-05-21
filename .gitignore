@@ -7,5 +7,6 @@ models/*
 **/__pycache__/
 *.pkl
 data/*
-
+torch.ipynb
+runs/*
 

@@ -1,7 +1,7 @@
 import random
 import pickle
 
-random.seed(420)
+# random.seed(420)
 
 def load_data(file_name):
     """
@@ -45,7 +45,6 @@ def load_vocab():
         vocab = pickle.load(f)
         vocab_size = len(vocab)
     return vocab, vocab_size
-
 
 
 def split_data(data, splits):

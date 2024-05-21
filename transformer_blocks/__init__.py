@@ -1,1 +1,2 @@
-from .Transformer import Transformer
+from .Transformer import Transformer, PositionalEncoding
+from .EncoderBlock import Encoder
