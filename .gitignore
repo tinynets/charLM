@@ -8,4 +8,5 @@ models/*
 *.pkl
 data/*
 torch.ipynb
+runs/*
 
